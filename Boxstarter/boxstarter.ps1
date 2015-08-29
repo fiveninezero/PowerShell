@@ -12,6 +12,8 @@ if ((Get-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Ser
 
 # Enable Hyper-V
 Enable-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online -All -NoRestart
+Enable-WindowsOptionalFeature -FeatureName TFTP -Online -All -NoRestart
+Enable-WindowsOptionalFeature -FeatureName TelnetClient -Online -All -NoRestart
 
 # Software deployment 
 choco install 7zip -y
