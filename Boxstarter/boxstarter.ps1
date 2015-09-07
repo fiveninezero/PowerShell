@@ -51,7 +51,11 @@ if (!(Test-Path -Path C:\Symbols ))
 # Configuration for TECHSOFT Datenverarbeitung GmbH
 $vpn = (Get-VpnConnection | Where-Object {$_.ServerAddress -eq "vpn.techsoft.at"})
 if (!$vpn) {
-  Add-VpnConnection -Name "TECHSOFT" -ServerAddress "vpn.techsoft.at" -TunnelType L2tp -EncryptionLevel Required -AuthenticationMethod MsChapv2 -L2tpPsk "obviouslynottherealpw" -Force -RememberCredential -PassThru
+  Add-VpnConnection -Name "TECHSOFT L2TP VPN" -ServerAddress "vpn.techsoft.at" -TunnelType L2tp -EncryptionLevel Required -AuthenticationMethod MsChapv2 -L2tpPsk "obviouslynottherealpw" -Force -RememberCredential -PassThru
+}
+$vpn = (Get-VpnConnection | Where-Object {$_.ServerAddress -eq "sslvpn.techsoft.at"})
+if (!$vpn) {
+   Add-VpnConnection -Name "TECHSOFT SSL VPN" -ServerAddress "sslvpn.techsoft.at" -TunnelType Sstp -EncryptionLevel "Required" -AuthenticationMethod MSChapv2 -Force -RememberCredential -PassThru -SplitTunneling $true
 }
 
 # Configure and install Windows updates (again!)
