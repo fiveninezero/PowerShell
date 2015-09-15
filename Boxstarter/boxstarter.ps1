@@ -49,15 +49,18 @@ if (!(Test-Path -Path C:\Symbols ))
 }
 
 # Configuration for TECHSOFT Datenverarbeitung GmbH
-# Old L2TP VPN connection ...
-#$vpn = (Get-VpnConnection | Where-Object {$_.ServerAddress -eq "vpn.techsoft.at"})
-#if (!$vpn) {
-#  Add-VpnConnection -Name "TECHSOFT L2TP VPN" -ServerAddress "vpn.techsoft.at" -TunnelType L2tp -EncryptionLevel Required -AuthenticationMethod MsChapv2 -L2tpPsk "obviouslynottherealpw" -Force -RememberCredential -PassThru
-#}
-$vpn = (Get-VpnConnection | Where-Object {$_.ServerAddress -eq "sslvpn.techsoft.at"})
-if (!$vpn) {
-   Add-VpnConnection -Name "TECHSOFT SSL VPN" -ServerAddress "sslvpn.techsoft.at" -TunnelType Sstp -EncryptionLevel "Required" -AuthenticationMethod MSChapv2 -Force -RememberCredential -PassThru -SplitTunneling $true
+# L2TP VPN
+$vpn = Get-VpnConnection -Name "TECHSOFT L2TP VPN"
+if ($vpn) {
+	$vpn | Remove-VpnConnection -Force
 }
+Add-VpnConnection -Name "TECHSOFT L2TP VPN" -ServerAddress "vpn.techsoft.at" -TunnelType L2tp -EncryptionLevel Required -AuthenticationMethod MsChapv2 -L2tpPsk "obviouslynottherealpw" -Force -RememberCredential -PassThru
+# SSTP VPN
+$vpn = Get-VpnConnection -Name "TECHSOFT SSL VPN"
+if ($vpn) {
+	$vpn | Remove-VpnConnection -Force
+}
+Add-VpnConnection -Name "TECHSOFT SSL VPN" -ServerAddress "sslvpn.techsoft.at" -TunnelType Sstp -EncryptionLevel "Required" -AuthenticationMethod MSChapv2 -Force -RememberCredential -PassThru
 
 # Configure and install Windows updates (again!)
 Enable-MicrosoftUpdate
